@@ -24,6 +24,24 @@
 
 # Understanding the Text Generator
  - For testing purposes, use a subset of the text to reduce processing time Here, we use a portion of the text from character 300,000 to 800,000: `text = text[300000:800000]`
+ - **SEQ_LENGTH** determines how many characters are included in each input sequence. For example, if **SEQ_LENGTH** is 40, each input sequence will be 40 characters long: `SEQ_LENGTH = 40`
+ - **STEP_SIZE** determines the interval between the start of each sequence. For example, if STEP_SIZE is 3, the sequences will start at positions 0, 3, 6, etc. This allows for overlapping sequences and increases the number of training examples.:`STEP_SIZE = 3`
+
+ - Initialize numpy arrays for input (x) and output (y) with the appropriate dimensions 
+ - x will have the shape (number of sequences, SEQ_LENGTH, number of unique characters)
+ - y will have the shape (number of sequences, number of unique characters)
+ *The dtype=np.float32 ensures the data is in the correct format for the model*
+`x = np.zeros((len(sentences), SEQ_LENGTH, len(characters)), dtype=np.float32)`
+`y = np.zeros((len(sentences), len(characters)), dtype=np.float32)`
+
+ - Populate the numpy arrays with one-hot encoded data. Loop through each sequence and character to set the corresponding index in the array to 1: 
+ ```
+ for i, sentence in enumerate(sentences):
+    for t, character in enumerate(sentence):
+        x[i,t, char_to_index[character]] = 1
+    y[i, char_to_index[next_chars[i]]] = 1
+    
+ ```
 
 
 
