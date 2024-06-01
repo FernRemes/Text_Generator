@@ -38,3 +38,37 @@ def sample(preds, temprature = 1.0):
     probas = np.random.multinomial(1, preds, 1)
     return np.argmax(probas)
 
+
+def generate_text(length, temperature):
+    start = random.randint(0, len(text) - SEQ_LENGTH - 1)
+    generated = ''
+    sentence = text[start : start + SEQ_LENGTH]
+    generated += sentence
+    for _ in range(length) :
+        x = np.zeros((1, SEQ_LENGTH, len(characters)))
+        for t, character in enumerate(sentence) :
+            x[0, t, char_to_index[character]] = 1
+
+        predictions = model.predict(x, verbose = 0)[0]
+        next_index = sample(predictions, temperature)
+        next_char = index_to_char[next_index]
+
+        generated += next_char
+        sentence = sentence[1:] + next_char
+
+    return generated
+
+print('---------0.2---------')
+print(generate_text(300, 0.2))
+print('---------0.1---------')
+print(generate_text(300, 0.1))
+print('---------0.3---------')
+print(generate_text(300, 0.3))
+print('---------0.5---------')
+print(generate_text(300, 0.5))
+print('---------0.6---------')
+print(generate_text(300, 0.6))
+print('---------0.8---------')
+print(generate_text(300, 0.8))
+print('---------1.0---------')
+print(generate_text(300, 1.0))
