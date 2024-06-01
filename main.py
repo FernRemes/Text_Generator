@@ -48,7 +48,7 @@ for i, sentence in enumerate(sentences):
         x[i,t, char_to_index[character]] = 1
     y[i, char_to_index[next_chars[i]]] = 1
 
-# Build the Nueral Network model
+# Build the Neural Network model
 model = Sequential()
 model.add(LSTM(128, input_shape = (SEQ_LENGTH, len(characters))))
 model.add(Dense(len(characters)))

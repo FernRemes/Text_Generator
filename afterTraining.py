@@ -27,37 +27,49 @@ index_to_char = dict((i, c) for i, c in enumerate(characters))
 SEQ_LENGTH = 40
 STEP_SIZE = 3
 
-
+# Load the now trained model from main.py
 model = tf.keras.models.load_model('textgenerator.model.keras')
 
+# Function to sample the next character from the predicted probabilites
 def sample(preds, temprature = 1.0):
+    # Convert predictions to float64 for numerical stability
     preds = np.asarray(preds).astype('float64')
+    # Apply temperature scaling to control randomness
     preds = np.log(preds) / temprature
     exp_preds = np.exp(preds)
+    # Softmax function to compute probabilities
     preds = exp_preds / np.sum(exp_preds)
+    # Sample from the probability distribution
     probas = np.random.multinomial(1, preds, 1)
     return np.argmax(probas)
 
-
+# Function to generate text using the trained model
 def generate_text(length, temperature):
+    # Choose a random starting point from the text
     start = random.randint(0, len(text) - SEQ_LENGTH - 1)
     generated = ''
     sentence = text[start : start + SEQ_LENGTH]
     generated += sentence
+    # Generating text of specified length
     for _ in range(length) :
+        # Creating input tensorflow for the model
         x = np.zeros((1, SEQ_LENGTH, len(characters)))
+        # Encoding the current sequence into the input tensor
         for t, character in enumerate(sentence) :
             x[0, t, char_to_index[character]] = 1
 
+        # Predict the next character probabilities and append it to the generated text
         predictions = model.predict(x, verbose = 0)[0]
         next_index = sample(predictions, temperature)
         next_char = index_to_char[next_index]
-
         generated += next_char
+
+        # Updating the input sequence by shifting one character to the right
         sentence = sentence[1:] + next_char
 
     return generated
 
+# Generate text with different temprature or accuracy values
 print('---------0.2---------')
 print(generate_text(300, 0.2))
 print('---------0.1---------')
