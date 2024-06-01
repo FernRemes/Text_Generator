@@ -40,8 +40,19 @@
     for t, character in enumerate(sentence):
         x[i,t, char_to_index[character]] = 1
     y[i, char_to_index[next_chars[i]]] = 1
-    
+
  ```
+ ### Build The Model
+ - The Sequential model allows us to build a neural network layer by layer
+    `model = Sequential()`
+ - Add an LSTM layer with 128 units. The input shape is (SEQ_LENGTH, len(characters)), where SEQ_LENGTH is the length of the sequence and len(characters) is the size of the character set.
+    `model.add(LSTM(128, input_shape=(SEQ_LENGTH, len(characters))))`
+ - Add a Dense layer with len(characters) units to output a probability distribution over the character set
+    `model.add(Dense(len(characters)))`
+ - Add a softmax activation layer to convert the output to probabilities. The softmax activation function is commonly used for multi-class classification problems
+    `model.add(Activation('softmax'))`
+ - Compile the model with the categorical crossentropy loss function and RMSprop optimizer. The categorical crossentropy loss function is used for multi-class classification. The RMSprop optimizer is used with a learning rate of 0.01
+    `model.compile(loss = 'categorical_crossentropy', optimizer = RMSprop(learning_rate = 0.01))`
 
 
 
