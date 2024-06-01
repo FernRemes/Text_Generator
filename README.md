@@ -13,13 +13,19 @@
     ==HINT==: This error might have occurred since this system does not have Windows Long Path support enabled. You can find information on how to enable this at [Enable Long Paths](https://pip.pypa.io/warnings/enable-long-paths)
 
     ### Suggestion: 
-     - [ ] Navigate to the "==Registry Editor==" on your computer.
-     - [ ] ==(Optional)== Create a backup of the current Registry for safety.
+     - [ ] Navigate to the "**Registry Editor**" on your computer.
+     - [ ] **(Optional)** Create a backup of the current Registry for safety.
      - [ ] Access the following directory: "\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem"
      - [ ] Locate the file named "LongPathsEnabled".
      - [ ] Select the file and modify the value data to 1.
      - [ ] Click "Okay" to confirm the changes.
      - [ ] Restart your computer for the changes to take effect.
  - You should now have no problem with long file packets
+
+# Understanding the Text Generator
+ - For testing purposes, use a subset of the text to reduce processing time Here, we use a portion of the text from character 300,000 to 800,000: `text = text[300000:800000]`
+
+
+
 
 
