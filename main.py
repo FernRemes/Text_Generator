@@ -30,8 +30,8 @@ for i in range(0, len(text) - SEQ_LENGTH, STEP_SIZE):
     sentences.append(text[i: i + SEQ_LENGTH])
     next_chars.append(text[i + SEQ_LENGTH])
 
-x = np.zeros(len(sentences), SEQ_LENGTH, len(characters), dtype = bool)
-y = np.zeros(len(sentences), len(characters), dtype = bool)
+x = np.zeros((len(sentences), SEQ_LENGTH, len(characters)), dtype = bool)
+y = np.zeros((len(sentences), len(characters)), dtype = bool)
 
 for i, sentence in enumerate(sentences):
     for t, character in enumerate(sentence):
@@ -39,4 +39,12 @@ for i, sentence in enumerate(sentences):
     y[i, char_to_index[next_chars[i]]] = 1
 
 
+model = Sequential()
+model.add(LSTM(128, input_shape = (SEQ_LENGTH, len(characters))))
+model.add(Dense(len(characters)))
+model.add(Activation('softmax'))
+
+model.compile(loss = 'cactegorial_crossentropy', optimizer = RMSprop(lr = 0.01))
+
+model.fit(x,y, batch_size = 256, epochs = 4)
 
